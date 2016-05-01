@@ -49,10 +49,11 @@ namespace ImageProcessorCore
         /// <param name="stream">The stream to save the image to.</param>
         /// <param name="quality">The quality to save the image to representing the number of colors. Between 1 and 100.</param>
         /// <exception cref="ArgumentNullException">Thrown if the stream is null.</exception>
-        public static void SaveAsGif(this ImageBase source, Stream stream, int quality = 256) => new GifEncoder() { Quality = quality }.Encode(source, stream);
+        public static void SaveAsGif(this ImageBase source, Stream stream, int quality = 256) => new GifEncoder { Quality = quality }.Encode(source, stream);
 
         /// <summary>
         /// Applies the collection of processors to the image.
+        /// <remarks>This method does not resize the target image.</remarks>
         /// </summary>
         /// <param name="source">The image this method extends.</param>
         /// <param name="processors">Any processors to apply to the image.</param>
@@ -85,6 +86,9 @@ namespace ImageProcessorCore
 
         /// <summary>
         /// Applies the collection of processors to the image.
+        /// <remarks>
+        /// This method is not chainable.
+        /// </remarks>
         /// </summary>
         /// <param name="source">The source image. Cannot be null.</param>
         /// <param name="width">The target image width.</param>
@@ -164,6 +168,8 @@ namespace ImageProcessorCore
                 }
             }
 
+            // Clean up.
+            source.Dispose();
             return transformedImage;
         }
     }
